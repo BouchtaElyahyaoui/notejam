@@ -2,15 +2,23 @@ pipeline {
     agent any
     environment {
         PROJECT_ID = 'protean-bit-376817'
-                CLUSTER_NAME = 'cluster-1'
-                LOCATION = 'uc-central1-c'
-                CREDENTIALS_ID = 'kubernetes'
+        CLUSTER_NAME = 'cluster-1'
+        LOCATION = 'uc-central1-c'
+        CREDENTIALS_ID = 'kubernetes'
     }
     
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Print Credentials') {
+            steps {
+                script {
+                    echo "$CREDENTIALS_ID"
+                }
             }
         }
         
