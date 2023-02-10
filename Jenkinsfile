@@ -13,21 +13,17 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build image') {
-            steps {
-                script {
-                    app = docker.build("bouchtadocker/pipeline:${env.BUILD_ID}")
-                    }
-            }
-        }
+        
         
         stage('Push image') {
             steps {
                 script {
                         withCredentials([usernamePassword(credentialsId: 'my-docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                        sh 'docker build -t bouchtadocker/pipeline:${env.BUILD_ID} .'
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        sh 'docker push bouchtadocker/pipeline:${env.BUILD_ID}' 
                     }
-                    app.push("${env.BUILD_ID}")
+                    
                  }
                                  
             }
