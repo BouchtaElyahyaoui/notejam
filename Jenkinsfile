@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        PROJECT_ID = 'striped-bastion-329118'
-                CLUSTER_NAME = 'jenkins'
-                LOCATION = 'asia-southeast1-a'
+        PROJECT_ID = 'protean-bit-376817'
+                CLUSTER_NAME = 'cluster-1'
+                LOCATION = 'uc-central1-c'
                 CREDENTIALS_ID = 'kubernetes'
     }
     
@@ -16,7 +16,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app = docker.build("arshad1914/pipeline:${env.BUILD_ID}")
+                    app = docker.build("bouchtadocker/pipeline:${env.BUILD_ID}")
                     }
             }
         }
@@ -24,10 +24,8 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
-                    withCredentials( \
-                                 [string(credentialsId: 'dockerhub',\
-                                 variable: 'dockerhub')]) {
-                        sh "echo $dockerhub | docker login -u arshad1914 --password-stdin"
+                        withCredentials([usernamePassword(credentialsId: 'my-docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
                     }
                     app.push("${env.BUILD_ID}")
                  }
