@@ -19,9 +19,9 @@ pipeline {
             steps {
                 script {
                         withCredentials([usernamePassword(credentialsId: 'my-docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh 'docker build -t bouchtadocker/pipeline:${env.BUILD_ID} .'
-                        sh 'echo $PASS | docker login -u $USER --password-stdin'
-                        sh 'docker push bouchtadocker/pipeline:${env.BUILD_ID}' 
+                        sh "docker build -t bouchtadocker/pipeline:${env.BUILD_ID} ."
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                        sh "docker push bouchtadocker/pipeline:${env.BUILD_ID}"
                     }
                     
                  }
