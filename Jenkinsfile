@@ -17,7 +17,7 @@ pipeline {
         stage('Print Credentials') {
             steps {
                 script {
-                    echo "$CREDENTIALS_ID"
+                    echo "${env.CREDENTIALS_ID}"
                 }
             }
         }
