@@ -14,15 +14,20 @@ pipeline {
             }
         }
 
-        stage('Print Credentials') {
+        stage('Build') {
             steps {
-                script {
-                    echo "${env.CREDENTIALS_ID}"
-                }
+                sh 'cd spring'
+                sh 'mvn clean install'
             }
         }
-        
-        
+
+        stage('Tets') {
+            steps {
+                sh 'cd spring'
+                sh 'mvn test'
+            }
+        }
+
         stage('Push image') {
             steps {
                 script {
@@ -31,9 +36,7 @@ pipeline {
                         sh "echo $PASS | docker login -u $USER --password-stdin"
                         sh "docker push bouchtadocker/pipeline:${env.BUILD_ID}"
                     }
-                    
                  }
-                                 
             }
         }
     
